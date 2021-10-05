@@ -1,4 +1,7 @@
 // Import here...
+const express = require("express");
+
+const router = express.Router();
 
 const books = [
   {
@@ -28,3 +31,32 @@ const books = [
 ];
 
 // Write routes here...
+
+router.get("/", (req, res) => {
+  console.log("here");
+  res.json({ books });
+});
+
+router.get("/:id", (req, res) => {
+  const { id } = req.params;
+
+  const book = books.find((book) => book.id === id);
+
+  res.json({ book });
+});
+
+router.post("/", (req, res) => {
+  const boookToCreate = {
+    ...req.body
+  };
+
+  boookToCreate.id = books.length + 1;
+
+  const updatedBooks = [...books, boookToCreate];
+
+  console.log("Check updatedFilms: ", updatedBooks);
+
+  res.json({ book: boookToCreate });
+});
+
+module.exports = router;
