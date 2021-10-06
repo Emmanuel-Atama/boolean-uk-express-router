@@ -33,12 +33,21 @@ router.get("/", (req, res) => {
   res.json({ films });
 });
 
-router.get("/:id", (req, res) => {
-  const { id } = req.params;
+router.get("/director/:name", (req, res) => {
+  console.log("Inside director route: , req.params");
 
-  const film = films.find((film) => film.id === id);
+  const { name } = req.params;
 
-  res.json({ film });
+  const filteredFilms = films.find((film) => {
+    const director = film.director;
+
+    const nameForComparison = name.split("-").join("").toLowerCase();
+    return director.toLowerCase() === nameForComparison;
+  });
+
+  console.log("Found films", filteredFilms);
+
+  res.json({ films: filteredFilms });
 });
 
 router.post("/", (req, res) => {
