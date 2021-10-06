@@ -37,12 +37,19 @@ router.get("/", (req, res) => {
   res.json({ books });
 });
 
-router.get("/:id", (req, res) => {
-  const { id } = req.params;
+router.get("/author/:name", (req, res) => {
+  const { name } = req.params;
 
-  const book = books.find((book) => book.id === id);
+  const filteredBooks = books.find((book) => {
+    const author = book.author;
 
-  res.json({ book });
+    const nameForComparison = name.split("-").join("").toLowerCase();
+    return author.toLowerCase() === nameForComparison;
+  });
+
+  console.log("Found books", filteredBooks);
+
+  res.json({ books: filteredBooks });
 });
 
 router.post("/", (req, res) => {
